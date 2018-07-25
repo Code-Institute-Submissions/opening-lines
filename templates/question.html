@@ -10,6 +10,7 @@
     {% if turn != 0 %}
     <p>The lines were from {{ data[turn-1]["book"] }} by {{ data[turn-1]["author"] }}</p>
     {% endif %}
+    <p>{{ current_player }}'s turn</p>
     {{ data[turn]["excerpt"] }}
     <form method="post">
         <input name="answer"></input>
