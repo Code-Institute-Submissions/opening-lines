@@ -7,6 +7,12 @@
     <title>Opening Lines</title>
 </head>
 <body>
+    
+    {% for player in list_of_players_and_scores %}
+    <p>{{ player[0] }}: {{ player[1]}}</p>
+    {% endfor %}
+    
+
     {% if turn != 0 %}
     <p>The lines were from {{ data[turn-1]["book"] }} by {{ data[turn-1]["author"] }}</p>
     {% endif %}

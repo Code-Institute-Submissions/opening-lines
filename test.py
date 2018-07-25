@@ -21,5 +21,11 @@ class TestRun(unittest.TestCase):
         current_player = run.get_current_player(["Rod","Jane","Freddy"], 5)
         self.assertEqual(current_player, "Freddy")
         
+    def test_can_amend_scores(self):
+        list_of_scores = run.amend_scores(["Rod", "Jane", "Freddy"], ["0","0","0"], "Jane")
+        self.assertEqual(list_of_scores, ["0","1","0"])
+        list_of_scores = run.amend_scores(["Rod", "Jane", "Freddy", "Bungle"], ["0","3","5","2"], "Bungle")
+        self.assertEqual(list_of_scores, ["0","3","5","3"])
+        
       
       

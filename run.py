@@ -31,7 +31,18 @@ def get_current_player(list_of_players, turn):
         player_number = turn % len(list_of_players)
     current_player = list_of_players[player_number]
     return current_player
+
     
+def amend_scores (list_of_players, list_of_scores, current_player):
+    position_in_list = list_of_players.index(current_player)
+    score = int(list_of_scores[position_in_list]) +1
+    list_of_scores[position_in_list] = str(score)
+    return list_of_scores
+    
+def write_scores_to_file (list_of_scores):
+    with open ("data/scores.txt","w") as file:
+        for score in list_of_scores:
+            file.write(score + '\n')
   
 # index page - finds number of players
 @app.route('/', methods=["GET", "POST"])
@@ -54,21 +65,27 @@ def players():
 
 @app.route('/<turn>', methods=["GET", "POST"])
 def total (turn):
-    list_of_players = session["list_of_players"]
     with open("data/data.json", "r") as json_data:
         data = json.load(json_data)
+    with open("data/scores.txt", "r") as file:
+       list_of_scores = file.read().splitlines()
+    list_of_players = session["list_of_players"]
+    list_of_players_and_scores = zip(list_of_players, list_of_scores)
     turn=int(turn)
     number_of_turns = len(list_of_players)*10
-    current_player=get_current_player(list_of_players, turn)
+    current_player = get_current_player(list_of_players, turn)
+    
     if request.method == "POST":
         correct_or_not = check_answer(request.form["answer"], data, turn)
         
         # if answer correct, goes to next page
         if correct_or_not is True:
+            list_of_scores = amend_scores(list_of_players, list_of_scores, current_player)
+            write_scores_to_file(list_of_scores)
             turn = turn+1
             return redirect(turn)
         
-        # if answer not correct gives anaother guess. Number of guesses read/written to file
+        # if answer not correct gives another guess. Number of guesses read/written to file
         else:
             with open("data/guesses.txt", "r") as file:
                 guesses = file.read()
@@ -80,7 +97,8 @@ def total (turn):
                 flash('That\'s incorrect. Have one more try.')
                 with open("data/guesses.txt", "w") as file:
                     file.write("Two guesses")
-    return render_template("question.html", turn=turn, data=data, current_player=current_player)
+                    
+    return render_template("question.html", turn=turn, data=data, current_player=current_player, list_of_players_and_scores=list_of_players_and_scores)
     
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
