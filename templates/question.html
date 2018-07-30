@@ -4,32 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" />
     <title>Opening Lines</title>
 </head>
 <body>
-    
-    {% for player in list_of_players_and_scores %}
-    <p>{{ player[0] }}: {{ player[1]}}</p>
-    {% endfor %}
-    
-
-    {% if turn != 0 %}
-    <p>The lines were from {{ data[turn-1]["book"] }} by {{ data[turn-1]["author"] }}</p>
-    {% endif %}
-    <p>{{ current_player }}'s turn</p>
-    {{ data[turn]["excerpt"] }}
-    <form method="post">
-        <input name="answer"></input>
-        <button type="submit" class="btn btn-success submit">Select</button>
-    </form>
-     {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-</body>   
+     <h1>Opening Lines</h1>
+     <div class="container">
+         
+         <!--left-hand panel lists scores - or final scores if game over-->
+         <aside class="left">
+             <div class = "scores">
+                {% if number_of_turns != turn %}
+                    <h2> Scores</h2>
+                {% endif %}
+                {% if number_of_turns == turn %}
+                    <h2> Final Scores</h2>
+                {% endif %}
+                {% for player in list_of_players_and_scores %}
+                    <p>{{ player[0] }}: {{ player[1] }} </p>
+                {% endfor %}
+            </div>
+        </aside>
+        <main>
+            
+            <!--correct answer to previous question, unless first turn-->
+            {% if turn != 0 %}
+                <p><strong>The lines were from {{ data[random_sequence[turn-1]]["book"] }} by {{ data[random_sequence[turn-1]]["author"] }}.</strong></p>
+                <br /><br />
+            {% endif %}
+            
+            <!--displayed if end of game-->
+            {% if number_of_turns == turn %}
+                <p>That's the end of the game. <a href="/">Play again.</a></p>
+            {% endif %}
+            
+             <!--displays who's turn it is and form->
+            {% if number_of_turns != turn %}
+                <h2>{{ current_player }}'s turn</h2>
+                <p>"{{ question["excerpt"] }}"</p>
+                <form class="player-selector" method="post">
+                <p><input class="answer" name="answer" placeholder="Enter book title here"></input></p>
+                <p><button type="submit" class="btn btn-success submit">Select</button></p>
+                </form>
+            {% endif %}
+            
+            <!--------flashed messages-------->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </main>
+        
+        <!--------right-hand best ever score-------->
+        <aside class="right">
+            <div class="top-score">
+                <h2>Best ever score</h2>
+                <p><strong>{{ highest_ever_score[0] }}</strong>: {{ highest_ever_score [1] }}</p>
+            </div>
+        </aside>
+    </div>
+</body>
 </html>
+   

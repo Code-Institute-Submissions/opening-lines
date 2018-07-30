@@ -4,18 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" />
     <title>Opening Lines</title>
 </head>
 <body>
-    <p>Please select the number of players.</p>
-    <form method="post">
-        <select name="number_of_players">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-        <button type="submit">Select</button>
-    </form>
+    <h1>Opening Lines</h1>
+    <div class="container">
+        <aside class="left">
+            <blockquote>"All this happened, more or less. The war parts anyway, are pretty much true. One guy I knew really <em>was</em> shot in Dresden for taking a teapot that wasn't his."</blockquote>
+        </aside>
+        <main>
+            <p class="book-icon"><i class="fas fa-book-open"></i></p>
+            <h2>Test your knowledge of literature.</h2>
+            <p>You will be presented with ten random-picked opening lines.</p>
+            <p>Can you work out what book they are from?</p>
+            
+            <!-------form-------->
+            <form class="player-selector" method="post">
+                <p><strong>Please select the number of players.</strong></p>
+                <select name="number_of_players">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <button type="submit">Select</button>
+            </form>
+            
+        </main>
+        <aside class="right">
+            <blockquote>"<em>3 May. Bistritz</em>.&#8212 Left Munich at 8.35pm on 1st May, arriving at Vienna early next morning; should have arrived at 6.46, but train was an hour late."</blockquote>
+        </aside>
+    </div>
 </body>
 </html>

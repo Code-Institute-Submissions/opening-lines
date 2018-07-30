@@ -1,17 +1,35 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css" />
     <title>Opening Lines</title>
 </head>
 <body>
-      <form method="post">
-            <p>Please enter a name for each player.</p>
-            {% for player in range(1, number_of_players+1) %}
+    <h1>Opening Lines</h1>
+    <div class="container">
+        <aside class="left">
+            <blockquote>"It was a bright cold day in April, and the clocks were striking thirteen."</blockquote>
+        </aside>
+        <main>
+            
+            <!-----------Form to enter players' names ----------->
+            <form class="player-selector" method="post">
+                <p>Please enter a name for each player.</p>
+                {% for player in range(1, number_of_players+1) %}
                 <p><input name="Player {{player}}" placeholder="Player {{player}}" required></input></p>
-            {% endfor %}
-            <button type="submit" name="proceed" class="btn btn-success submit">Submit</button>
-    </form>
+                {% endfor %}
+                <button type="submit" name="proceed" class="btn btn-success submit">Submit</button>
+            </form>
+            
+        </main>
+        <aside class="right">
+            <blockquote>"This is the story of what a Woman's patience can endure, and of what a Man's resultion can achieve."</blockquote>
+        </aside>
+    </div>
 </body>
 </html>
