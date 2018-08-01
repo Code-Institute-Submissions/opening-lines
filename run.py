@@ -6,6 +6,22 @@ from flask import Flask, render_template, request, redirect, session, url_for, f
 app = Flask(__name__)
 app.secret_key="some_secret"
 
+# ----Creates list of players' names-----         
+def write_players_to_list(form, number_of_players):
+    list_of_players = []
+    for player in range(1, number_of_players+1):
+        list_of_players.append(form["Player " + str(player)])
+    return list_of_players
+
+# ----Determines who the current player is----       
+def get_current_player(list_of_players, turn):
+    if turn < len(list_of_players):
+        player_number = turn
+    else:
+        player_number = turn % len(list_of_players)
+    current_player = list_of_players[player_number]
+    return current_player
+
 # -----generates random sequence the same length as the data-----
 
 def get_random_sequence(data):
@@ -34,21 +50,7 @@ def write_initial_scores(number_of_players):
         for player in range(0, number_of_players):
             file.write("0" '\n')
 
-# ----Creates list of players' names-----         
-def write_players_to_list(form, number_of_players):
-    list_of_players = []
-    for player in range(1, number_of_players+1):
-        list_of_players.append(form["Player " + str(player)])
-    return list_of_players
 
-# ----Determines who the current player is----       
-def get_current_player(list_of_players, turn):
-    if turn < len(list_of_players):
-        player_number = turn
-    else:
-        player_number = turn % len(list_of_players)
-    current_player = list_of_players[player_number]
-    return current_player
 
 # ----increases score of current player by 1----   
 def amend_scores (list_of_players, list_of_scores, current_player):
@@ -74,12 +76,16 @@ def get_highest_ever_score(list_of_players_and_scores):
                 for item in highest_ever_score:
                     file.write(item + '\n')
     return highest_ever_score
-        
   
 # ---- index page - finds number of players ----
 @app.route('/', methods=["GET", "POST"])
 def index():
     number_of_players=0
+    
+    # Makes sure file doesn't contain data from previous game
+    with open("data/guesses.txt", "w") as file:
+                    file.write("No guesses")
+                    
     if request.method == "POST":
         session['number_of_players'] = int(request.form["number_of_players"])
         return redirect(url_for('players'))
@@ -123,6 +129,8 @@ def total (turn):
         if correct_or_not is True:
             list_of_scores = amend_scores(list_of_players, list_of_scores, current_player)
             write_scores_to_file(list_of_scores)
+            with open("data/guesses.txt", "w") as file:
+                    file.write("No guesses")
             turn = turn+1
             return redirect(turn)
         
@@ -130,14 +138,15 @@ def total (turn):
         else:
             with open("data/guesses.txt", "r") as file:
                 guesses = file.read()
-            if guesses == "Two guesses":
-                open("data/guesses.txt", 'w').close()
+            if guesses == "One guess":
+                with open("data/guesses.txt", "w") as file:
+                    file.write("No guesses")
                 turn = turn+1
                 return redirect(turn)
             else: 
                 flash('That\'s incorrect. Have one more try.')
                 with open("data/guesses.txt", "w") as file:
-                    file.write("Two guesses")
+                    file.write("One guess")
                     
     # ----variables written to page-----                
     return render_template("question.html", turn=turn, data=data, current_player=current_player, list_of_players_and_scores=list_of_players_and_scores, question=question, random_sequence=random_sequence, highest_ever_score=highest_ever_score, number_of_turns=number_of_turns)
