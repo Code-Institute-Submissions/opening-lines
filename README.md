@@ -32,8 +32,9 @@ It was built unit test-driven development, using the unittest test suite in test
 
 ## Deployment
 
+????????
 
 ## License information
 
-Open sources, and the opening lines are too short to be copyright.
+Open source, and the opening lines are too short to be copyright.
  
