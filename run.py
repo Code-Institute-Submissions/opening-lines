@@ -43,14 +43,19 @@ def check_answer(answer, question):
         return True
     else:
         return False
+        
+#write "no guesses" to text file so it's known 
+#there has been no previous guesses
+
+def write_no_guesses():
+    with open("data/guesses.txt", "w") as file:
+                    file.write("No guesses")
 
 # -----write zero scores to text file-----
 def write_initial_scores(number_of_players):
     with open ("data/scores.txt","w") as file:
         for player in range(0, number_of_players):
             file.write("0" '\n')
-
-
 
 # ----increases score of current player by 1----   
 def amend_scores (list_of_players, list_of_scores, current_player):
@@ -83,8 +88,7 @@ def index():
     number_of_players=0
     
     # Makes sure file doesn't contain data from previous game
-    with open("data/guesses.txt", "w") as file:
-                    file.write("No guesses")
+    write_no_guesses()
                     
     if request.method == "POST":
         session['number_of_players'] = int(request.form["number_of_players"])
@@ -129,8 +133,7 @@ def total (turn):
         if correct_or_not is True:
             list_of_scores = amend_scores(list_of_players, list_of_scores, current_player)
             write_scores_to_file(list_of_scores)
-            with open("data/guesses.txt", "w") as file:
-                    file.write("No guesses")
+            write_no_guesses()
             turn = turn+1
             return redirect(turn)
         
@@ -139,8 +142,7 @@ def total (turn):
             with open("data/guesses.txt", "r") as file:
                 guesses = file.read()
             if guesses == "One guess":
-                with open("data/guesses.txt", "w") as file:
-                    file.write("No guesses")
+                write_no_guesses()
                 turn = turn+1
                 return redirect(turn)
             else: 
