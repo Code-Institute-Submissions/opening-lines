@@ -115,6 +115,8 @@ def total (turn):
         data = json.load(json_data)
     with open("data/scores.txt", "r") as file:
        list_of_scores = file.read().splitlines()
+    with open("data/correct-or-wrong.txt", "r") as file:
+       answer_response = file.read()
     
     # -----variables------
     turn=int(turn)
@@ -134,6 +136,8 @@ def total (turn):
             list_of_scores = amend_scores(list_of_players, list_of_scores, current_player)
             write_scores_to_file(list_of_scores)
             write_no_guesses()
+            with open("data/correct-or-wrong.txt", "w") as file:
+                    file.write("That's correct.")
             turn = turn+1
             return redirect(turn)
         
@@ -143,15 +147,18 @@ def total (turn):
                 guesses = file.read()
             if guesses == "One guess":
                 write_no_guesses()
+                with open("data/correct-or-wrong.txt", "w") as file:
+                    file.write("That's incorrect.")
                 turn = turn+1
                 return redirect(turn)
             else: 
                 flash('That\'s incorrect. Have one more try.')
                 with open("data/guesses.txt", "w") as file:
                     file.write("One guess")
-                    
+        return render_template("question.html", turn=turn, data=data, current_player=current_player, list_of_players_and_scores=list_of_players_and_scores, question=question, random_sequence=random_sequence, highest_ever_score=highest_ever_score, number_of_turns=number_of_turns, guesses=guesses)
+        
     # ----variables written to page-----                
-    return render_template("question.html", turn=turn, data=data, current_player=current_player, list_of_players_and_scores=list_of_players_and_scores, question=question, random_sequence=random_sequence, highest_ever_score=highest_ever_score, number_of_turns=number_of_turns)
+    return render_template("question.html", turn=turn, data=data, current_player=current_player, list_of_players_and_scores=list_of_players_and_scores, question=question, random_sequence=random_sequence, highest_ever_score=highest_ever_score, number_of_turns=number_of_turns, answer_response=answer_response)
    
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

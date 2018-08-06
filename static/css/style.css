@@ -100,7 +100,8 @@ a {
 
 .flashes {
     list-style-type: none;
-    padding-left: 0px
+    padding-left: 0px;
+    color: #ffffb3;
 }
 
 /*media rules*/

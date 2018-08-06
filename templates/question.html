@@ -29,9 +29,9 @@
         </aside>
         <main>
             
-            <!--correct answer to previous question, unless first turn-->
-            {% if turn != 0 %}
-                <p><strong>The previous question's lines were from {{ data[random_sequence[turn-1]]["book"] }} by {{ data[random_sequence[turn-1]]["author"] }}.</strong></p>
+            <!--correct answer to previous question, unless first turn or just had an incorrect guess-->
+            {% if turn != 0 and guesses != "No guesses" %}
+                <p><strong>{{ answer_response }} The previous question's lines were from {{ data[random_sequence[turn-1]]["book"] }} by {{ data[random_sequence[turn-1]]["author"] }}.</strong></p>
                 <br /><br />
             {% endif %}
             
