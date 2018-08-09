@@ -71,10 +71,10 @@ def write_scores_to_file (list_of_scores):
             file.write(score + '\n')
 
 # gets highest ever score from text file and amends if a current score is higher            
-def get_highest_ever_score(list_of_players_and_scores):
+def get_highest_ever_score(list_of_players, list_of_players_and_scores):
     with open ("data/highest-score.txt","r") as file:
         highest_ever_score = file.read().splitlines()
-    for player in range (0, len(list_of_players_and_scores)):
+    for player in range (0, len(list_of_players)):
         if int(list_of_players_and_scores[player][1]) >= int(highest_ever_score[1]):
             highest_ever_score = [list_of_players_and_scores[player][0],list_of_players_and_scores[player][1]]
             with open ("data/highest-score.txt","w") as file:
@@ -126,7 +126,7 @@ def total (turn):
     list_of_players_and_scores = zip(list_of_players, list_of_scores)
     number_of_turns = len(list_of_players)*10
     current_player = get_current_player(list_of_players, turn)
-    highest_ever_score = get_highest_ever_score(list_of_players_and_scores)
+    highest_ever_score = get_highest_ever_score(list_of_players, list_of_players_and_scores)
     
     # -----response to submitted question -check answer, amend score if necessary and redirect------
     if request.method == "POST":
