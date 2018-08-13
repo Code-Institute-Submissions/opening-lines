@@ -48,7 +48,7 @@
                 <p><input class="answer" name="answer" placeholder="Enter book title here"></input></p>
                 <p><button type="submit" class="btn btn-success submit">Select</button></p>
                 </form>
-            {% endif %}
+            {% endif %} 
             
             <!--------flashed messages-------->
             {% with messages = get_flashed_messages() %}
@@ -60,6 +60,11 @@
                     </ul>
                 {% endif %}
             {% endwith %}
+            
+            {% if number_of_turns != turn %}
+                <p><a href="/"><button class="quit">Quit</button></a></p>
+            {% endif %}
+            
         </main>
         
         <!--------right-hand best ever score-------->

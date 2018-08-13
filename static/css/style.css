@@ -104,6 +104,13 @@ a {
     color: #ffffb3;
 }
 
+/*quit button*/
+
+.quit {
+    background-color: #66cc99;
+    border-radius: 2px;
+}
+
 /*media rules*/
 
 @media only screen and (min-width: 800px) {
